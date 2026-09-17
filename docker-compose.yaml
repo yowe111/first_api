@@ -1,0 +1,52 @@
+# docker-compose описывает набор контейнеров (сервисов), которые
+# запускаются вместе одной командой `docker compose up`.
+services:
+  # ── Сервис с нашим приложением на FastAPI ────────────────────────────
+  app:
+    build:
+      context: ./              # где искать файлы для сборки образа (текущая папка)
+      dockerfile: app.dockerfile
+    env_file:
+      - .env                   # переменные окружения берём из файла .env
+    depends_on:
+      postgres:
+        condition: service_healthy   # ждём, пока база данных будет готова
+    ports:
+      - "8000:8000"            # проброс порта: localhost:8000 -> контейнер:8000
+    volumes:
+      - .:/app                 # монтируем код внутрь контейнера (для авто-перезагрузки)
+    networks:
+      - network
+    # Запускаем сервер с флагом --reload: он перезапускается при изменении кода.
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ── Сервис с базой данных PostgreSQL ─────────────────────────────────
+  postgres:
+    image: postgres:15         # готовый образ PostgreSQL версии 15
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - TZ=Europe/Moscow
+    ports:
+      - "${POSTGRES_PORT}:5432"  # проброс порта БД на хост-машину
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # данные БД сохраняются между перезапусками
+    networks:
+      - network
+    # Healthcheck: docker сам проверяет, готова ли база принимать подключения.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+# Общая сеть, чтобы контейнеры видели друг друга по имени (app <-> postgres).
+networks:
+  network:
+    driver: bridge
+
+# Именованный том для хранения данных PostgreSQL на диске.
+volumes:
+  postgres_data:
+    driver: local

@@ -1,0 +1,29 @@
+[project]
+# Имя пакета (проекта). Используется только внутри Poetry.
+name = "my-api"
+version = "0.1.0"
+description = "Учебное FastAPI-приложение: Hello World + базовая авторизация"
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+readme = "README.md"
+# Версия Python, на которой работает проект.
+requires-python = ">=3.11,<4.0"
+
+# Список библиотек (зависимостей), которые нужны приложению.
+# Формат: "имя (>=минимальная_версия,<следующая_мажорная)"
+dependencies = [
+    "fastapi (>=0.115.0,<1.0.0)",          # веб-фреймворк, на котором строится API
+    "uvicorn[standard] (>=0.30.0,<1.0.0)", # ASGI-сервер, который запускает наше приложение
+    "sqlalchemy (>=2.0.41,<3.0.0)",        # ORM для работы с базой данных на Python
+    "asyncpg (>=0.30.0,<0.31.0)",          # асинхронный драйвер для PostgreSQL
+    "pydantic (>=2.11.5,<3.0.0)",          # валидация данных (входящих/исходящих)
+    "pydantic-settings (>=2.9.1,<3.0.0)",  # чтение настроек из .env
+    "bcrypt (>=4.2.0,<5.0.0)",             # хеширование паролей
+    "pyjwt (>=2.9.0,<3.0.0)",              # создание и проверка JWT-токенов
+    "python-multipart (>=0.0.12,<1.0.0)",  # нужен FastAPI для формы логина (OAuth2)
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
