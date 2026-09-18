@@ -53,6 +53,8 @@ class User(Base):
     # hashed_password — ХЕШ пароля (зашифрованный «отпечаток»), а НЕ сам пароль.
     # Настоящий пароль в базе не хранится никогда — так безопаснее.
     hashed_password: Mapped[str] = mapped_column(String(255))
+    
+    #email: Mapped[str] = mapped_column(String(255), unique=True) 
 
     # created_at — когда была создана запись.
     # Mapped[datetime] — тип «дата и время».
@@ -60,4 +62,5 @@ class User(Base):
     # текущее время, нам не нужно указывать его вручную.
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP, server_default=func.now()
+
     )

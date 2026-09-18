@@ -4,7 +4,7 @@ name = "my-api"
 version = "0.1.0"
 description = "Учебное FastAPI-приложение: Hello World + базовая авторизация"
 authors = [
-    { name = "Your Name", email = "you@example.com" }
+    { name = "Nikita", email = "111_222@list.ru" }
 ]
 readme = "README.md"
 # Версия Python, на которой работает проект.

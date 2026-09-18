@@ -24,6 +24,7 @@ from pydantic import BaseModel, ConfigDict
 # Схема для РЕГИСТРАЦИИ. Такие данные клиент присылает, создавая аккаунт.
 class UserCreate(BaseModel):
     username: str   # логин — строка (обязателен)
+    email: str
     password: str   # пароль — строка (обязателен)
 
 

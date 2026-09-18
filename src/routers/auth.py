@@ -66,6 +66,7 @@ async def register(
     # Создаём объект пользователя. Пароль СРАЗУ хешируем — открытый не храним.
     user = User(
         username=data.username,
+        email = data.email,
         hashed_password=hash_password(data.password),
     )
     session.add(user)          # добавляем объект в сессию (пока только в памяти)
