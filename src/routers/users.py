@@ -16,7 +16,9 @@ from src.dependencies import get_current_user
 from src.models import User
 # Схема ответа (без пароля).
 from src.schemas import UserRead
-
+from src.database import get_session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 # Роутер: все адреса начинаются с /users, группа «Пользователи» в /docs.
 router = APIRouter(prefix="/users", tags=["Пользователи"])
 
@@ -35,3 +37,10 @@ async def read_me(
     """Возвращает данные текущего пользователя (того, чей токен прислан)."""
     # Просто возвращаем пользователя; FastAPI отдаст его как JSON по UserRead.
     return current_user
+
+@router.get("/", response_model=UserRead)
+async def read_users(session: Annotated[AsyncSession, Depends(get_session)]
+    ):
+    users = await session.execute(select(User).all())
+
+    return users 
