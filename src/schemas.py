@@ -32,6 +32,7 @@ class UserCreate(BaseModel):
 # Обрати внимание: здесь НЕТ пароля — наружу его не показываем.
 class UserRead(BaseModel):
     id: int         # номер пользователя
+    email: str         
     username: str   # его логин
 
     # from_attributes=True разрешает Pydantic создавать эту схему

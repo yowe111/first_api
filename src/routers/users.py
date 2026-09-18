@@ -41,6 +41,5 @@ async def read_me(
 @router.get("/", response_model=UserRead)
 async def read_users(session: Annotated[AsyncSession, Depends(get_session)]
     ):
-    users = await session.execute(select(User).all())
     
-    return users 
+    return (await session.execute(select(User))).scalars().all()
