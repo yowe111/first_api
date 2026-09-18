@@ -42,5 +42,5 @@ async def read_me(
 async def read_users(session: Annotated[AsyncSession, Depends(get_session)]
     ):
     users = await session.execute(select(User).all())
-
+    
     return users 

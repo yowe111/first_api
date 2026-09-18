@@ -54,7 +54,7 @@ class User(Base):
     # Настоящий пароль в базе не хранится никогда — так безопаснее.
     hashed_password: Mapped[str] = mapped_column(String(255))
     
-    #email: Mapped[str] = mapped_column(String(255), unique=True) 
+    email: Mapped[str] = mapped_column(String(255), unique=True) 
 
     # created_at — когда была создана запись.
     # Mapped[datetime] — тип «дата и время».
